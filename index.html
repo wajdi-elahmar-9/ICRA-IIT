@@ -6,1543 +6,7 @@
   <title>ICRA 2026 Satellite School | IEEE RAS Tunisia Chapter</title>
   <meta name="description" content="ICRA 2026 Satellite School static and animated landing page." />
 
-  <style>
-    :root {
-      --bg: #050712;
-      --bg-2: #08111f;
-      --panel: rgba(9, 18, 34, 0.78);
-      --panel-2: rgba(12, 27, 49, 0.82);
-      --glass: rgba(255, 255, 255, 0.07);
-      --line: rgba(129, 221, 255, 0.18);
-      --line-2: rgba(255, 255, 255, 0.11);
-      --text: #f5fbff;
-      --muted: #9fb2c7;
-      --muted-2: #6e839b;
-      --cyan: #00e0ff;
-      --blue: #2f73ff;
-      --deep-blue: #122a88;
-      --violet: #7c3cff;
-      --green: #28e7a3;
-      --orange: #ffb547;
-      --danger: #ff4d6d;
-      --max: 1180px;
-      --radius: 24px;
-      --shadow: 0 30px 90px rgba(0, 0, 0, 0.36);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: Inter, Segoe UI, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 8%, rgba(0, 224, 255, 0.24), transparent 28%),
-        radial-gradient(circle at 85% 15%, rgba(124, 60, 255, 0.23), transparent 32%),
-        radial-gradient(circle at 60% 88%, rgba(47, 115, 255, 0.16), transparent 38%),
-        linear-gradient(180deg, #050712 0%, #07101e 42%, #04060d 100%);
-      overflow-x: hidden;
-      line-height: 1.65;
-    }
-
-    body.menu-open {
-      overflow: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
-
-    canvas#networkCanvas {
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      opacity: 0.82;
-    }
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      opacity: 0.13;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: linear-gradient(to bottom, black, transparent 92%);
-    }
-
-    .cursor-halo {
-      position: fixed;
-      width: 360px;
-      height: 360px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: -1;
-      background: radial-gradient(circle, rgba(0,224,255,0.12), transparent 62%);
-      transform: translate(-50%, -50%);
-      transition: opacity 0.25s ease;
-      opacity: 0;
-    }
-
-    .container {
-      width: min(100% - 34px, var(--max));
-      margin-inline: auto;
-    }
-
-    .section {
-      position: relative;
-      padding: 104px 0;
-    }
-
-    .section-heading {
-      max-width: 780px;
-      margin: 0 auto 48px;
-      text-align: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 8px 14px;
-      margin-bottom: 16px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(0, 224, 255, 0.07);
-      color: var(--cyan);
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 20px var(--green);
-    }
-
-    .section-title {
-      font-size: clamp(34px, 5vw, 60px);
-      line-height: 1.02;
-      letter-spacing: -0.055em;
-      margin-bottom: 18px;
-    }
-
-    .section-description {
-      color: var(--muted);
-      font-size: 17px;
-    }
-
-    .grad {
-      color: transparent;
-      background: linear-gradient(120deg, var(--cyan), #79efff 30%, var(--blue) 70%, var(--violet));
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
-
-    .glass {
-      border: 1px solid var(--line-2);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.092), rgba(255,255,255,0.04)),
-        rgba(7, 16, 31, 0.72);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 46px;
-      padding: 12px 20px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-weight: 900;
-      cursor: pointer;
-      transition: 0.25s ease;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      color: #02101a;
-      background: linear-gradient(120deg, var(--cyan), #5cc8ff 45%, var(--blue));
-      box-shadow: 0 18px 42px rgba(0, 224, 255, 0.22);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 24px 56px rgba(0, 224, 255, 0.34);
-    }
-
-    .btn-ghost {
-      color: var(--text);
-      border-color: var(--line);
-      background: rgba(255, 255, 255, 0.055);
-    }
-
-    .btn-ghost:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0,224,255,0.55);
-      background: rgba(0, 224, 255, 0.085);
-    }
-
-    .top-strip {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1100;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(3, 7, 18, 0.84);
-      backdrop-filter: blur(18px);
-      color: #b5c8dc;
-      font-size: 12px;
-    }
-
-    .top-strip .container {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .top-links {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .top-links a:hover {
-      color: var(--cyan);
-    }
-
-    .navbar {
-      position: fixed;
-      top: 34px;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 18px 0;
-      transition: 0.28s ease;
-    }
-
-    .navbar.scrolled {
-      padding: 11px 0;
-      background: rgba(5, 9, 21, 0.78);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(22px);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: max-content;
-      font-weight: 950;
-      letter-spacing: -0.04em;
-    }
-
-    .brand-mark {
-      position: relative;
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #052e65, var(--blue), var(--cyan));
-      box-shadow: 0 16px 38px rgba(0,224,255,0.23);
-      overflow: hidden;
-    }
-
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border: 1px solid rgba(255,255,255,0.36);
-      border-radius: 11px;
-    }
-
-    .brand-small {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: -5px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 19px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 850;
-    }
-
-    .nav-links a {
-      position: relative;
-      transition: 0.2s ease;
-    }
-
-    .nav-links a:not(.btn)::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -8px;
-      width: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: var(--cyan);
-      transition: 0.22s ease;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--cyan);
-    }
-
-    .nav-links a:hover::after,
-    .nav-links a.active::after {
-      width: 100%;
-    }
-
-    .menu-button {
-      display: none;
-      width: 46px;
-      height: 46px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      color: var(--text);
-      background: rgba(255,255,255,0.07);
-      cursor: pointer;
-    }
-
-    .menu-button span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      margin: 5px auto;
-      border-radius: 999px;
-      background: var(--text);
-      transition: 0.25s ease;
-    }
-
-    .menu-button.open span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-
-    .menu-button.open span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .menu-button.open span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
-
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 168px 0 72px;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 140px;
-      width: 620px;
-      height: 620px;
-      border: 1px solid rgba(0,224,255,0.13);
-      border-radius: 50%;
-      transform: translateX(-50%);
-      animation: pulseRing 4s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .hero-grid {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .hero-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 9px 14px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(0,224,255,0.25);
-      border-radius: 999px;
-      background: rgba(0,224,255,0.08);
-      color: var(--cyan);
-      font-weight: 900;
-      font-size: 14px;
-    }
-
-    .hero-kicker span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 22px var(--green);
-    }
-
-    .hero h1 {
-      font-size: clamp(46px, 7.4vw, 94px);
-      line-height: 0.94;
-      letter-spacing: -0.075em;
-      margin-bottom: 24px;
-    }
-
-    .hero-lead {
-      max-width: 650px;
-      margin-bottom: 30px;
-      color: var(--muted);
-      font-size: 18px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .hero-pills {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .hero-pill {
-      padding: 9px 13px;
-      border: 1px solid var(--line-2);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.055);
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 850;
-    }
-
-    .hero-visual {
-      position: relative;
-    }
-
-    .orbit-card {
-      position: relative;
-      min-height: 540px;
-      overflow: hidden;
-      padding: 24px;
-    }
-
-    .orbit-card::before {
-      content: "";
-      position: absolute;
-      inset: -38%;
-      background: conic-gradient(from 90deg, transparent, rgba(0,224,255,0.22), transparent, rgba(124,60,255,0.24), transparent);
-      animation: spin 12s linear infinite;
-    }
-
-    .orbit-inner {
-      position: relative;
-      z-index: 2;
-      height: 492px;
-      padding: 26px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(4, 9, 18, 0.86);
-      overflow: hidden;
-    }
-
-    .orbit-ring {
-      position: absolute;
-      inset: 64px;
-      border-radius: 50%;
-      border: 1px dashed rgba(0,224,255,0.28);
-      animation: spin 18s linear infinite reverse;
-    }
-
-    .orbit-ring:nth-child(2) {
-      inset: 108px;
-      border-style: solid;
-      opacity: 0.55;
-      animation-duration: 24s;
-    }
-
-    .core {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 156px;
-      height: 156px;
-      transform: translate(-50%, -50%);
-      border-radius: 42px;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.26), transparent 30%),
-        linear-gradient(135deg, rgba(0,224,255,0.25), rgba(47,115,255,0.14));
-      border: 1px solid rgba(0,224,255,0.38);
-      box-shadow: 0 0 60px rgba(0,224,255,0.16);
-    }
-
-    .core strong {
-      font-size: 40px;
-      letter-spacing: -0.08em;
-    }
-
-    .node {
-      position: absolute;
-      width: 84px;
-      min-height: 78px;
-      padding: 12px;
-      border-radius: 20px;
-      border: 1px solid rgba(0,224,255,0.2);
-      background: rgba(255,255,255,0.07);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
-      animation: float 4.8s ease-in-out infinite;
-    }
-
-    .node b {
-      color: var(--cyan);
-      font-size: 17px;
-    }
-
-    .node.one { left: 28px; top: 70px; }
-    .node.two { right: 42px; top: 90px; animation-delay: 0.4s; }
-    .node.three { left: 62px; bottom: 88px; animation-delay: 0.7s; }
-    .node.four { right: 54px; bottom: 68px; animation-delay: 1s; }
-
-    .status-terminal {
-      position: absolute;
-      left: 24px;
-      right: 24px;
-      bottom: 24px;
-      padding: 14px;
-      border: 1px solid rgba(40,231,163,0.22);
-      border-radius: 18px;
-      background: rgba(2, 12, 18, 0.78);
-      color: var(--green);
-      font-family: Consolas, Monaco, monospace;
-      font-size: 12px;
-    }
-
-    .status-terminal span {
-      display: block;
-      color: #8df9cf;
-      margin-top: 4px;
-    }
-
-    .stats-wrap {
-      margin-top: -42px;
-      position: relative;
-      z-index: 4;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .stat-card {
-      position: relative;
-      overflow: hidden;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .stat-card::before {
-      content: "";
-      position: absolute;
-      inset: auto 20px 0;
-      height: 3px;
-      border-radius: 999px 999px 0 0;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      opacity: 0.65;
-    }
-
-    .stat-number {
-      color: var(--cyan);
-      font-size: 42px;
-      font-weight: 950;
-      line-height: 1;
-      letter-spacing: -0.05em;
-    }
-
-    .stat-label {
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 850;
-      text-transform: lowercase;
-    }
-
-    .grant-layout {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .grant-main {
-      padding: 34px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .grant-main::after {
-      content: "GRANT";
-      position: absolute;
-      right: -34px;
-      bottom: -42px;
-      color: rgba(255,255,255,0.035);
-      font-size: 118px;
-      font-weight: 950;
-      letter-spacing: -0.08em;
-    }
-
-    .grant-main h3 {
-      font-size: 34px;
-      line-height: 1.1;
-      margin-bottom: 14px;
-    }
-
-    .grant-main p {
-      color: var(--muted);
-      margin-bottom: 22px;
-    }
-
-    .deadline-box {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .time-cell {
-      padding: 14px 10px;
-      border: 1px solid var(--line-2);
-      border-radius: 16px;
-      background: rgba(0,224,255,0.055);
-      text-align: center;
-    }
-
-    .time-cell strong {
-      display: block;
-      color: var(--cyan);
-      font-size: 26px;
-      line-height: 1;
-    }
-
-    .time-cell span {
-      color: var(--muted-2);
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-
-    .grant-cards {
-      display: grid;
-      gap: 16px;
-    }
-
-    .coverage-card {
-      position: relative;
-      padding: 28px;
-      overflow: hidden;
-    }
-
-    .coverage-card::before {
-      content: attr(data-label);
-      display: inline-flex;
-      padding: 6px 10px;
-      margin-bottom: 14px;
-      border-radius: 999px;
-      color: var(--cyan);
-      background: rgba(0,224,255,0.08);
-      border: 1px solid rgba(0,224,255,0.16);
-      font-size: 11px;
-      font-weight: 950;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .coverage-card h3 {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-
-    .coverage-card .amount {
-      color: var(--cyan);
-      font-size: 34px;
-      font-weight: 950;
-      margin: 12px 0 8px;
-      letter-spacing: -0.04em;
-    }
-
-    .check-list {
-      list-style: none;
-      display: grid;
-      gap: 10px;
-      color: var(--muted);
-      margin-top: 16px;
-    }
-
-    .check-list li {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .check-list li::before {
-      content: "✓";
-      color: var(--green);
-      font-weight: 950;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .about-copy {
-      padding: 34px;
-    }
-
-    .about-copy p {
-      color: var(--muted);
-      margin-top: 14px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .feature-card {
-      padding: 22px;
-      transition: 0.25s ease;
-    }
-
-    .feature-card:hover,
-    .program-card:hover,
-    .committee-card:hover,
-    .partner-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(0,224,255,0.32);
-    }
-
-    .feature-number {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 14px;
-      border-radius: 15px;
-      color: var(--cyan);
-      border: 1px solid rgba(0,224,255,0.22);
-      background: rgba(0,224,255,0.08);
-      font-weight: 950;
-    }
-
-    .feature-card h3 {
-      margin-bottom: 7px;
-      font-size: 18px;
-    }
-
-    .feature-card p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .program-shell {
-      padding: 26px;
-    }
-
-    .program-intro {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: center;
-      padding: 0 0 22px;
-      margin-bottom: 22px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .program-intro p {
-      color: var(--muted);
-    }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tab-button {
-      padding: 10px 16px;
-      border-radius: 999px;
-      color: var(--muted);
-      border: 1px solid var(--line-2);
-      background: rgba(255,255,255,0.055);
-      cursor: pointer;
-      font-weight: 950;
-      transition: 0.22s ease;
-    }
-
-    .tab-button.active,
-    .tab-button:hover {
-      color: #02101a;
-      background: linear-gradient(120deg, var(--cyan), var(--blue));
-    }
-
-    .program-panels {
-      position: relative;
-    }
-
-    .program-panel {
-      display: none;
-      animation: fadeUp 0.35s ease;
-    }
-
-    .program-panel.active {
-      display: block;
-    }
-
-    .program-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .program-card {
-      padding: 24px;
-      transition: 0.25s ease;
-    }
-
-    .program-date {
-      color: var(--cyan);
-      font-size: 13px;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .program-card h3 {
-      font-size: 22px;
-      margin: 10px 0 18px;
-    }
-
-    .program-list {
-      list-style: none;
-      display: grid;
-      gap: 9px;
-      color: var(--muted);
-    }
-
-    .program-list li {
-      padding-left: 18px;
-      position: relative;
-    }
-
-    .program-list li::before {
-      content: "›";
-      position: absolute;
-      left: 0;
-      color: var(--cyan);
-      font-weight: 950;
-    }
-
-    .mini-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .mini-card {
-      padding: 20px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .mini-card strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 5px;
-    }
-
-    .speakers-box {
-      position: relative;
-      max-width: 840px;
-      margin: 0 auto;
-      padding: 46px;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .speakers-box::before {
-      content: "";
-      position: absolute;
-      inset: 22px;
-      border: 1px dashed rgba(0,224,255,0.18);
-      border-radius: 18px;
-      pointer-events: none;
-    }
-
-    .speaker-dot {
-      width: 74px;
-      height: 74px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      color: var(--cyan);
-      background: rgba(0,224,255,0.08);
-      border: 1px solid rgba(0,224,255,0.24);
-      font-weight: 950;
-      animation: pulseGlow 2.4s ease-in-out infinite;
-    }
-
-    .speakers-box h3 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    .speakers-box p {
-      position: relative;
-      z-index: 1;
-      color: var(--muted);
-      margin-bottom: 22px;
-    }
-
-    .committee-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .committee-card {
-      padding: 20px;
-      text-align: center;
-      transition: 0.25s ease;
-      min-height: 248px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .avatar {
-      width: 92px;
-      height: 92px;
-      margin: 0 auto 14px;
-      border-radius: 28px;
-      display: grid;
-      place-items: center;
-      color: var(--text);
-      font-size: 24px;
-      font-weight: 950;
-      background:
-        radial-gradient(circle at 28% 24%, rgba(255,255,255,0.25), transparent 25%),
-        linear-gradient(135deg, rgba(0,224,255,0.24), rgba(47,115,255,0.22), rgba(124,60,255,0.24));
-      border: 1px solid rgba(0,224,255,0.22);
-    }
-
-    .role-tag {
-      display: inline-flex;
-      justify-content: center;
-      width: max-content;
-      max-width: 100%;
-      margin: 8px auto 10px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      color: var(--cyan);
-      background: rgba(0,224,255,0.07);
-      border: 1px solid rgba(0,224,255,0.14);
-      font-size: 11px;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .committee-card p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .partners-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-      max-width: 780px;
-      margin: 0 auto 28px;
-    }
-
-    .partner-card {
-      min-height: 155px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 24px;
-      transition: 0.25s ease;
-    }
-
-    .partner-card strong {
-      display: block;
-      font-size: 26px;
-      letter-spacing: -0.04em;
-    }
-
-    .partner-card span {
-      color: var(--cyan);
-      font-weight: 900;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .sponsor-note {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 26px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .travel-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .travel-card {
-      padding: 28px;
-    }
-
-    .travel-card h3 {
-      margin-bottom: 12px;
-      font-size: 25px;
-    }
-
-    .travel-card p {
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .terminal {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      gap: 18px;
-      padding: 24px;
-    }
-
-    .query-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .query-btn {
-      width: 100%;
-      text-align: left;
-      padding: 16px;
-      border: 1px solid var(--line-2);
-      border-radius: 16px;
-      color: var(--muted);
-      background: rgba(255,255,255,0.045);
-      cursor: pointer;
-      transition: 0.22s ease;
-    }
-
-    .query-btn strong {
-      display: block;
-      color: var(--cyan);
-      font-family: Consolas, Monaco, monospace;
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
-    .query-btn.active,
-    .query-btn:hover {
-      color: var(--text);
-      border-color: rgba(0,224,255,0.32);
-      background: rgba(0,224,255,0.075);
-    }
-
-    .terminal-screen {
-      min-height: 100%;
-      padding: 26px;
-      border-radius: 20px;
-      border: 1px solid rgba(40,231,163,0.2);
-      background: linear-gradient(180deg, rgba(4,18,24,0.84), rgba(2,8,14,0.86));
-      font-family: Consolas, Monaco, monospace;
-    }
-
-    .terminal-screen .screen-top {
-      display: flex;
-      gap: 7px;
-      margin-bottom: 20px;
-    }
-
-    .terminal-screen .screen-top span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--green);
-      opacity: 0.8;
-    }
-
-    .terminal-question {
-      color: var(--cyan);
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    .terminal-answer {
-      color: #b9f6da;
-      min-height: 128px;
-      white-space: pre-line;
-    }
-
-    .direct-query {
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-    }
-
-    .direct-query input {
-      flex: 1;
-      min-width: 0;
-      color: var(--text);
-      border: 1px solid var(--line-2);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      padding: 12px 15px;
-      outline: none;
-    }
-
-    .cta-card {
-      position: relative;
-      overflow: hidden;
-      padding: 44px;
-      text-align: center;
-    }
-
-    .cta-card::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -120px;
-      width: 520px;
-      height: 520px;
-      transform: translateX(-50%);
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,224,255,0.16), transparent 65%);
-    }
-
-    .cta-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .cta-card h2 {
-      font-size: clamp(34px, 4.5vw, 58px);
-      line-height: 1.02;
-      letter-spacing: -0.055em;
-      margin-bottom: 16px;
-    }
-
-    .cta-card p {
-      max-width: 760px;
-      margin: 0 auto 24px;
-      color: var(--muted);
-    }
-
-    .cta-metrics {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 22px 0;
-      color: var(--muted);
-    }
-
-    .cta-metrics span {
-      padding: 8px 12px;
-      border: 1px solid var(--line-2);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.055);
-      font-weight: 850;
-    }
-
-    .footer {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      background: rgba(1, 5, 13, 0.62);
-      padding: 48px 0 28px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.2fr repeat(3, 1fr);
-      gap: 30px;
-      margin-bottom: 28px;
-    }
-
-    .footer h3 {
-      font-size: 16px;
-      margin-bottom: 14px;
-    }
-
-    .footer p,
-    .footer a {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .footer-links {
-      display: grid;
-      gap: 8px;
-    }
-
-    .footer a:hover {
-      color: var(--cyan);
-    }
-
-    .socials {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .socials a {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      border: 1px solid var(--line-2);
-      background: rgba(255,255,255,0.055);
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 950;
-    }
-
-    .footer-bottom {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      color: var(--muted-2);
-      font-size: 13px;
-    }
-
-    .back-top {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      z-index: 950;
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      border: 1px solid rgba(0,224,255,0.3);
-      color: #02101a;
-      background: linear-gradient(120deg, var(--cyan), var(--blue));
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(12px);
-      transition: 0.22s ease;
-      font-weight: 950;
-    }
-
-    .back-top.show {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .preloader {
-      position: fixed;
-      inset: 0;
-      z-index: 3000;
-      display: grid;
-      place-items: center;
-      background: #030713;
-      transition: opacity 0.45s ease, visibility 0.45s ease;
-    }
-
-    .preloader.hide {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .loader-box {
-      width: min(90vw, 390px);
-      padding: 28px;
-      text-align: center;
-    }
-
-    .loader-ring {
-      width: 74px;
-      height: 74px;
-      margin: 0 auto 16px;
-      border-radius: 50%;
-      border: 3px solid rgba(255,255,255,0.12);
-      border-top-color: var(--cyan);
-      animation: spin 0.9s linear infinite;
-    }
-
-    .loader-box strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 20px;
-    }
-
-    .loader-box p {
-      color: var(--muted);
-      font-family: Consolas, Monaco, monospace;
-      font-size: 13px;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 2400;
-      display: none;
-      place-items: center;
-      padding: 20px;
-      background: rgba(0,0,0,0.58);
-      backdrop-filter: blur(10px);
-    }
-
-    .modal.open {
-      display: grid;
-    }
-
-    .modal-card {
-      width: min(100%, 500px);
-      padding: 30px;
-      text-align: center;
-      animation: fadeUp 0.25s ease;
-    }
-
-    .modal-card h3 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .modal-card p {
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(16px); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulseRing {
-      0%, 100% { opacity: 0.35; transform: translateX(-50%) scale(0.96); }
-      50% { opacity: 0.68; transform: translateX(-50%) scale(1.04); }
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 rgba(0,224,255,0); }
-      50% { box-shadow: 0 0 42px rgba(0,224,255,0.22); }
-    }
-
-    @media (max-width: 1100px) {
-      .hero-grid,
-      .grant-layout,
-      .about-grid,
-      .terminal {
-        grid-template-columns: 1fr;
-      }
-
-      .committee-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 900px) {
-      .top-strip {
-        display: none;
-      }
-
-      .navbar {
-        top: 0;
-      }
-
-      .menu-button {
-        display: block;
-      }
-
-      .nav-links {
-        position: fixed;
-        inset: 76px 18px auto 18px;
-        display: none;
-        max-height: calc(100vh - 96px);
-        overflow: auto;
-        padding: 18px;
-        border: 1px solid var(--line-2);
-        border-radius: 22px;
-        background: rgba(4, 9, 20, 0.96);
-        backdrop-filter: blur(22px);
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 9px 4px;
-      }
-
-      .hero {
-        padding-top: 126px;
-      }
-
-      .stats-grid,
-      .program-grid,
-      .mini-grid,
-      .travel-grid,
-      .partners-grid,
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .section {
-        padding: 76px 0;
-      }
-
-      .hero h1 {
-        font-size: 48px;
-      }
-
-      .orbit-card {
-        min-height: 460px;
-        padding: 16px;
-      }
-
-      .orbit-inner {
-        height: 428px;
-      }
-
-      .node {
-        width: 72px;
-        min-height: 66px;
-        font-size: 11px;
-      }
-
-      .core {
-        width: 126px;
-        height: 126px;
-      }
-
-      .stats-grid,
-      .program-grid,
-      .mini-grid,
-      .deadline-box,
-      .feature-grid,
-      .committee-grid,
-      .travel-grid,
-      .partners-grid,
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .grant-main,
-      .coverage-card,
-      .about-copy,
-      .program-shell,
-      .speakers-box,
-      .terminal,
-      .cta-card {
-        padding: 22px;
-      }
-
-      .program-intro,
-      .direct-query,
-      .footer-bottom {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <canvas id="networkCanvas" aria-hidden="true"></canvas>
@@ -1552,8 +16,8 @@
   <div class="preloader" id="preloader">
     <div class="loader-box glass">
       <div class="loader-ring"></div>
-      <strong>Initializing ICRA System</strong>
-      <p>Loading robotics network...</p>
+      <strong data-en="Initializing ICRA System" data-ar="تهيئة نظام ICRA">Initializing ICRA System</strong>
+      <p data-en="Loading robotics network..." data-ar="تحميل شبكة الروبوتات...">Loading robotics network...</p>
     </div>
   </div>
 
@@ -1562,12 +26,12 @@
       <div class="top-links">
         <a href="https://www.ieee.org" target="_blank" rel="noreferrer">IEEE.org</a>
         <a href="https://ieeexplore.ieee.org" target="_blank" rel="noreferrer">IEEE Xplore</a>
-        <a href="https://standards.ieee.org" target="_blank" rel="noreferrer">Standards</a>
+        <a href="https://standards.ieee.org" target="_blank" rel="noreferrer" data-en="Standards" data-ar="المعايير">Standards</a>
         <a href="https://spectrum.ieee.org" target="_blank" rel="noreferrer">Spectrum</a>
       </div>
       <div class="top-links">
-        <a href="https://www.ieee.org/membership/join" target="_blank" rel="noreferrer">Join IEEE</a>
-        <a href="https://www.ieee.org/about/help/donate" target="_blank" rel="noreferrer">Donate</a>
+        <a href="https://www.ieee.org/membership/join" target="_blank" rel="noreferrer" data-en="Join IEEE" data-ar="انضم إلى IEEE">Join IEEE</a>
+        <a href="https://www.ieee.org/about/help/donate" target="_blank" rel="noreferrer" data-en="Donate" data-ar="تبرع">Donate</a>
       </div>
     </div>
   </div>
@@ -1577,20 +41,23 @@
       <a href="#home" class="brand" aria-label="Home">
         <span class="brand-mark">R</span>
         <span>
-          ICRA Satellite School
-          <span class="brand-small">IEEE RAS Tunisia Chapter</span>
+          <span data-en="ICRA Satellite School" data-ar="مدرسة ICRA الفضائية">ICRA Satellite School</span>
+          <span class="brand-small" data-en="IEEE RAS Tunisia Chapter" data-ar="فرع IEEE RAS تونس">IEEE RAS Tunisia Chapter</span>
         </span>
       </a>
 
       <nav class="nav-links" id="navLinks">
-        <a href="#program">Program</a>
-        <a href="#speakers">Speakers</a>
-        <a href="#committee">Committee</a>
-        <a href="#partners">Partners</a>
-        <a href="#tunisia">Tunisia</a>
-        <a href="#visa">Visa</a>
-        <a href="#grant" class="btn btn-primary">Travel Grant</a>
+        <a href="#program" data-en="Program" data-ar="البرنامج">Program</a>
+        <a href="#speakers" data-en="Speakers" data-ar="المتحدثون">Speakers</a>
+        <a href="#committee" data-en="Committee" data-ar="اللجنة">Committee</a>
+        <a href="#partners" data-en="Partners" data-ar="الشركاء">Partners</a>
+        <a href="#tunisia" data-en="Tunisia" data-ar="تونس">Tunisia</a>
+        <a href="#visa" data-en="Visa" data-ar="التأشيرة">Visa</a>
+        <a href="#grant" class="btn btn-primary" data-en="Travel Grant" data-ar="منحة السفر">Travel Grant</a>
       </nav>
+
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" type="button" title="Toggle Theme">Dark</button>
+      <button class="lang-toggle" id="langToggle" aria-label="Toggle language" type="button" title="تبديل اللغة">EN</button>
 
       <button class="menu-button" id="menuButton" aria-label="Open menu" type="button">
         <span></span><span></span><span></span>
@@ -1602,20 +69,20 @@
     <section class="hero section" id="home">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <div class="hero-kicker"><span></span>Tunisia • June 1-3, 2026</div>
-          <h1>IEEE RAS Tunisia Chapter<br><span class="grad">ICRA Satellite School</span></h1>
-          <p class="hero-lead">Join world-leading roboticists for an intensive program covering advanced topics in robotics, control systems, autonomous systems, AI, and hands-on robotics education.</p>
+          <div class="hero-kicker"><span></span><span data-en="Tunisia • June 1-3, 2026" data-ar="تونس • 1-3 يونيو 2026">Tunisia • June 1-3, 2026</span></div>
+          <h1><span data-en="IEEE RAS Tunisia Chapter" data-ar="فرع IEEE RAS تونس">IEEE RAS Tunisia Chapter</span><br><span class="grad" data-en="ICRA Satellite School" data-ar="مدرسة ICRA الفضائية">ICRA Satellite School</span></h1>
+          <p class="hero-lead" data-en="Join world-leading roboticists for an intensive program covering advanced topics in robotics, control systems, autonomous systems, AI, and hands-on robotics education." data-ar="انضم إلى نخبة من خبراء الروبوتات العالميين في برنامج مكثف يغطي موضوعات متقدمة في الروبوتات وأنظمة التحكم والأنظمة المستقلة والذكاء الاصطناعي والتعلم التطبيقي.">Join world-leading roboticists for an intensive program covering advanced topics in robotics, control systems, autonomous systems, AI, and hands-on robotics education.</p>
 
           <div class="hero-actions">
-            <a href="https://forms.gle" target="_blank" rel="noreferrer" class="btn btn-primary">Apply for Travel Grant</a>
-            <a href="#program" class="btn btn-ghost">View Program</a>
+            <a href="https://forms.gle" target="_blank" rel="noreferrer" class="btn btn-primary" data-en="Apply for Travel Grant" data-ar="قدّم على منحة السفر">Apply for Travel Grant</a>
+            <a href="#program" class="btn btn-ghost" data-en="View Program" data-ar="عرض البرنامج">View Program</a>
           </div>
 
           <div class="hero-pills">
-            <span class="hero-pill">3 Days</span>
-            <span class="hero-pill">10+ Expert Speakers</span>
-            <span class="hero-pill">8 Key Topics</span>
-            <span class="hero-pill">Tunis, Tunisia</span>
+            <span class="hero-pill" data-en="3 Days" data-ar="3 أيام">3 Days</span>
+            <span class="hero-pill" data-en="10+ Expert Speakers" data-ar="أكثر من 10 متحدثين خبراء">10+ Expert Speakers</span>
+            <span class="hero-pill" data-en="8 Key Topics" data-ar="8 محاور رئيسية">8 Key Topics</span>
+            <span class="hero-pill" data-en="Tunis, Tunisia" data-ar="تونس، تونس">Tunis, Tunisia</span>
           </div>
         </div>
 
@@ -1625,13 +92,13 @@
               <div class="orbit-ring"></div>
               <div class="orbit-ring"></div>
               <div class="core"><strong>RAS</strong></div>
-              <div class="node one"><b>AI</b><span>Learning</span></div>
-              <div class="node two"><b>DL</b><span>Sessions</span></div>
-              <div class="node three"><b>LAB</b><span>Hands-on</span></div>
-              <div class="node four"><b>NET</b><span>Network</span></div>
+              <div class="node one"><b>AI</b><span data-en="Learning" data-ar="تعلم">Learning</span></div>
+              <div class="node two"><b>DL</b><span data-en="Sessions" data-ar="جلسات">Sessions</span></div>
+              <div class="node three"><b>LAB</b><span data-en="Hands-on" data-ar="تطبيقي">Hands-on</span></div>
+              <div class="node four"><b>NET</b><span data-en="Network" data-ar="تواصل">Network</span></div>
               <div class="status-terminal">
-                SYSTEM STATUS: ONLINE
-                <span>Program modules connected: robotics, control, AI, autonomy.</span>
+                <span data-en="SYSTEM STATUS: ONLINE" data-ar="حالة النظام: متصل">SYSTEM STATUS: ONLINE</span>
+                <span data-en="Program modules connected: robotics, control, AI, autonomy." data-ar="وحدات البرنامج متصلة: الروبوتات، التحكم، الذكاء الاصطناعي، الأنظمة المستقلة.">Program modules connected: robotics, control, AI, autonomy.</span>
               </div>
             </div>
           </div>
@@ -1641,53 +108,53 @@
 
     <section class="stats-wrap">
       <div class="container stats-grid">
-        <div class="stat-card glass reveal"><div class="stat-number" data-target="3" data-suffix="">0</div><div class="stat-label">intensive training days</div></div>
-        <div class="stat-card glass reveal"><div class="stat-number" data-target="10" data-suffix="+">0</div><div class="stat-label">expert speakers</div></div>
-        <div class="stat-card glass reveal"><div class="stat-number" data-target="8" data-suffix="">0</div><div class="stat-label">key topics</div></div>
-        <div class="stat-card glass reveal"><div class="stat-number" data-target="500" data-prefix="$" data-suffix="">0</div><div class="stat-label">international support</div></div>
+        <div class="stat-card glass reveal"><div class="stat-number" data-target="3" data-suffix="">0</div><div class="stat-label" data-en="intensive training days" data-ar="أيام تدريب مكثفة">intensive training days</div></div>
+        <div class="stat-card glass reveal"><div class="stat-number" data-target="10" data-suffix="+">0</div><div class="stat-label" data-en="expert speakers" data-ar="متحدثين خبراء">expert speakers</div></div>
+        <div class="stat-card glass reveal"><div class="stat-number" data-target="8" data-suffix="">0</div><div class="stat-label" data-en="key topics" data-ar="مواضيع رئيسية">key topics</div></div>
+        <div class="stat-card glass reveal"><div class="stat-number" data-target="500" data-prefix="$" data-suffix="">0</div><div class="stat-label" data-en="international support" data-ar="دعم دولي">international support</div></div>
       </div>
     </section>
 
     <section class="section" id="grant">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">Travel Grant Opportunity</span>
-          <h2 class="section-title">Funding Available <span class="grad">for Participants</span></h2>
-          <p class="section-description">Apply for financial support to attend ICRA Satellite School 2026. Selection is based on eligibility, motivation, IEEE involvement, and overall profile.</p>
+          <span class="eyebrow" data-en="Travel Grant Opportunity" data-ar="فرصة منحة السفر">Travel Grant Opportunity</span>
+          <h2 class="section-title"><span data-en="Funding Available" data-ar="التمويل متاح">Funding Available</span> <span class="grad" data-en="for Participants" data-ar="للمشاركين">for Participants</span></h2>
+          <p class="section-description" data-en="Apply for financial support to attend ICRA Satellite School 2026. Selection is based on eligibility, motivation, IEEE involvement, and overall profile." data-ar="تقدم بطلب للحصول على الدعم المالي لحضور مدرسة ICRA الفضائية 2026. يتم الاختيار بناءً على الأهلية والدافع ومشاركة IEEE والملف الشامل.">Apply for financial support to attend ICRA Satellite School 2026. Selection is based on eligibility, motivation, IEEE involvement, and overall profile.</p>
         </div>
 
         <div class="grant-layout">
           <div class="grant-main glass reveal">
-            <h3>Application Deadline</h3>
-            <p>April 26th, 2026 - 23:59 GMT+1. Submit your application before the deadline to be considered for funding.</p>
+            <h3 data-en="Application Deadline" data-ar="موعد تقديم الطلب">Application Deadline</h3>
+            <p data-en="April 26th, 2026 - 23:59 GMT+1. Submit your application before the deadline to be considered for funding." data-ar="26 أبريل 2026 - 23:59 GMT + 1. قدم طلبك قبل الموعد النهائي لتتم دراستك للتمويل.">April 26th, 2026 - 23:59 GMT+1. Submit your application before the deadline to be considered for funding.</p>
             <div class="deadline-box" id="deadlineBox">
-              <div class="time-cell"><strong id="days">00</strong><span>Days</span></div>
-              <div class="time-cell"><strong id="hours">00</strong><span>Hours</span></div>
-              <div class="time-cell"><strong id="minutes">00</strong><span>Minutes</span></div>
-              <div class="time-cell"><strong id="seconds">00</strong><span>Seconds</span></div>
+              <div class="time-cell"><strong id="days">00</strong><span data-en="Days" data-ar="الأيام">Days</span></div>
+              <div class="time-cell"><strong id="hours">00</strong><span data-en="Hours" data-ar="الساعات">Hours</span></div>
+              <div class="time-cell"><strong id="minutes">00</strong><span data-en="Minutes" data-ar="الدقائق">Minutes</span></div>
+              <div class="time-cell"><strong id="seconds">00</strong><span data-en="Seconds" data-ar="الثواني">Seconds</span></div>
             </div>
             <br>
-            <a class="btn btn-primary" href="https://forms.gle" target="_blank" rel="noreferrer">Apply for Travel Grant</a>
+            <a class="btn btn-primary" href="https://forms.gle" target="_blank" rel="noreferrer" data-en="Apply for Travel Grant" data-ar="التقدم بطلب منحة السفر">Apply for Travel Grant</a>
           </div>
 
           <div class="grant-cards">
-            <article class="coverage-card glass reveal" data-label="National">
-              <h3>Tunisian Participants</h3>
-              <p>Full registration fee coverage for local attendees.</p>
-              <div class="amount">Up to Full Registration</div>
+            <article class="coverage-card glass reveal" data-label="National" data-label-en="National" data-label-ar="محلي">
+              <h3 data-en="Tunisian Participants" data-ar="المشاركون التونسيون">Tunisian Participants</h3>
+              <p data-en="Full registration fee coverage for local attendees." data-ar="تغطية رسوم التسجيل الكاملة للحاضرين المحليين.">Full registration fee coverage for local attendees.</p>
+              <div class="amount" data-en="Up to Full Registration" data-ar="حتى التسجيل الكامل">Up to Full Registration</div>
               <ul class="check-list">
-                <li>Active IEEE RAS membership required.</li>
-                <li>Priority for applicants showing strong passion for robotics and automation.</li>
+                <li data-en="Active IEEE RAS membership required." data-ar="عضوية IEEE RAS نشطة مطلوبة.">Active IEEE RAS membership required.</li>
+                <li data-en="Priority for applicants showing strong passion for robotics and automation." data-ar="الأولوية للمتقدمين الذين يظهرون شغفاً قوياً بالروبوتات والأتمتة.">Priority for applicants showing strong passion for robotics and automation.</li>
               </ul>
             </article>
 
-            <article class="coverage-card glass reveal" data-label="International">
-              <h3>International Participants</h3>
-              <p>Financial support for global attendees.</p>
-              <div class="amount">Up to $500 USD</div>
+            <article class="coverage-card glass reveal" data-label="International" data-label-en="International" data-label-ar="دولي">
+              <h3 data-en="International Participants" data-ar="المشاركون الدوليون">International Participants</h3>
+              <p data-en="Financial support for global attendees." data-ar="دعم مالي للحاضرين العالميين.">Financial support for global attendees.</p>
+              <div class="amount" data-en="Up to $500 USD" data-ar="حتى 500 دولار أمريكي">Up to $500 USD</div>
               <ul class="check-list">
-                <li>Active IEEE RAS membership required.</li>
-                <li>Support may help with participation-related expenses.</li>
+                <li data-en="Active IEEE RAS membership required." data-ar="عضوية IEEE RAS نشطة مطلوبة.">Active IEEE RAS membership required.</li>
+                <li data-en="Support may help with participation-related expenses." data-ar="قد يساعد الدعم في النفقات المتعلقة بالمشاركة.">Support may help with participation-related expenses.</li>
               </ul>
             </article>
           </div>
@@ -1698,23 +165,23 @@
     <section class="section" id="about">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">About ICRA Satellite School</span>
-          <h2 class="section-title">World-Class Education <span class="grad">in Robotics</span></h2>
+          <span class="eyebrow" data-en="About ICRA Satellite School" data-ar="حول مدرسة ICRA الفضائية">About ICRA Satellite School</span>
+          <h2 class="section-title"><span data-en="World-Class Education" data-ar="تعليم عالمي المستوى">World-Class Education</span> <span class="grad" data-en="in Robotics" data-ar="في الروبوتات">in Robotics</span></h2>
         </div>
 
         <div class="about-grid">
           <div class="about-copy glass reveal">
-            <h3>The global ICRA spirit, hosted in Tunisia</h3>
-            <p>The IEEE International Conference on Robotics and Automation is one of the world’s leading robotics and automation conferences, gathering researchers, industry leaders, and academics to share advances in robotics, AI, intelligent systems, and automation.</p>
-            <p>The ICRA Satellite School is an intensive educational program organized by the IEEE RAS Tunisia Chapter in collaboration with IEEE RAS. It brings together leading minds in robotics to share cutting-edge research and practical knowledge.</p>
-            <p>Whether you are a student, researcher, or industry professional, this program offers a unique opportunity to accelerate your career in robotics and automation.</p>
+            <h3 data-en="The global ICRA spirit, hosted in Tunisia" data-ar="روح ICRA العالمية في تونس">The global ICRA spirit, hosted in Tunisia</h3>
+            <p data-en="The IEEE International Conference on Robotics and Automation is one of the world’s leading robotics and automation conferences, gathering researchers, industry leaders, and academics to share advances in robotics, AI, intelligent systems, and automation." data-ar="يعد المؤتمر الدولي للروبوتات والأتمتة من IEEE من أبرز المؤتمرات العالمية في الروبوتات والأتمتة، إذ يجمع الباحثين وقادة الصناعة والأكاديميين لتبادل أحدث التطورات في الروبوتات والذكاء الاصطناعي والأنظمة الذكية والأتمتة.">The IEEE International Conference on Robotics and Automation is one of the world’s leading robotics and automation conferences, gathering researchers, industry leaders, and academics to share advances in robotics, AI, intelligent systems, and automation.</p>
+            <p data-en="The ICRA Satellite School is an intensive educational program organized by the IEEE RAS Tunisia Chapter in collaboration with IEEE RAS. It brings together leading minds in robotics to share cutting-edge research and practical knowledge." data-ar="مدرسة ICRA الفضائية برنامج تعليمي مكثف ينظمه فرع IEEE RAS تونس بالتعاون مع IEEE RAS، ويجمع نخبة من المختصين في الروبوتات لمشاركة البحث المتقدم والمعرفة التطبيقية.">The ICRA Satellite School is an intensive educational program organized by the IEEE RAS Tunisia Chapter in collaboration with IEEE RAS. It brings together leading minds in robotics to share cutting-edge research and practical knowledge.</p>
+            <p data-en="Whether you are a student, researcher, or industry professional, this program offers a unique opportunity to accelerate your career in robotics and automation." data-ar="سواء كنت طالبا أو باحثا أو مهنيا في القطاع، يوفر لك هذا البرنامج فرصة مميزة لتطوير مسارك في الروبوتات والأتمتة.">Whether you are a student, researcher, or industry professional, this program offers a unique opportunity to accelerate your career in robotics and automation.</p>
           </div>
 
           <div class="feature-grid">
-            <article class="feature-card glass reveal"><div class="feature-number">01</div><h3>Comprehensive Curriculum</h3><p>Theory, applications, and emerging technologies.</p></article>
-            <article class="feature-card glass reveal"><div class="feature-number">02</div><h3>Expert Faculty</h3><p>Leading researchers and industry pioneers.</p></article>
-            <article class="feature-card glass reveal"><div class="feature-number">03</div><h3>Practical Experience</h3><p>Hands-on labs with robotics equipment.</p></article>
-            <article class="feature-card glass reveal"><div class="feature-number">04</div><h3>Global Community</h3><p>Network with professionals worldwide.</p></article>
+            <article class="feature-card glass reveal"><div class="feature-number">01</div><h3 data-en="Comprehensive Curriculum" data-ar="برنامج شامل">Comprehensive Curriculum</h3><p data-en="Theory, applications, and emerging technologies." data-ar="نظريات وتطبيقات وتقنيات ناشئة.">Theory, applications, and emerging technologies.</p></article>
+            <article class="feature-card glass reveal"><div class="feature-number">02</div><h3 data-en="Expert Faculty" data-ar="خبراء متخصصون">Expert Faculty</h3><p data-en="Leading researchers and industry pioneers." data-ar="باحثون بارزون ورواد من الصناعة.">Leading researchers and industry pioneers.</p></article>
+            <article class="feature-card glass reveal"><div class="feature-number">03</div><h3 data-en="Practical Experience" data-ar="تجربة تطبيقية">Practical Experience</h3><p data-en="Hands-on labs with robotics equipment." data-ar="مخابر عملية باستخدام معدات روبوتية.">Hands-on labs with robotics equipment.</p></article>
+            <article class="feature-card glass reveal"><div class="feature-number">04</div><h3 data-en="Global Community" data-ar="مجتمع عالمي">Global Community</h3><p data-en="Network with professionals worldwide." data-ar="تواصل مع مختصين من مختلف أنحاء العالم.">Network with professionals worldwide.</p></article>
           </div>
         </div>
       </div>
@@ -1723,46 +190,46 @@
     <section class="section" id="program">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">Program</span>
-          <h2 class="section-title">3-Day Intensive <span class="grad">Program</span></h2>
-          <p class="section-description">June 1-3: ICRA plenary streaming, deep learning sessions, hands-on workshops, and networking opportunities.</p>
+          <span class="eyebrow" data-en="Program" data-ar="البرنامج">Program</span>
+          <h2 class="section-title"><span data-en="3-Day Intensive" data-ar="برنامج مكثف لمدة 3 أيام">3-Day Intensive</span> <span class="grad" data-en="Program" data-ar="برنامج">Program</span></h2>
+          <p class="section-description" data-en="June 1-3: ICRA plenary streaming, deep learning sessions, hands-on workshops, and networking opportunities." data-ar="من 1 إلى 3 يونيو: بث الجلسات العامة لـ ICRA، جلسات تعلم عميق، ورش عمل تطبيقية، وفرص للتواصل.">June 1-3: ICRA plenary streaming, deep learning sessions, hands-on workshops, and networking opportunities.</p>
         </div>
 
         <div class="program-shell glass reveal">
           <div class="program-intro">
-            <p>Choose a day to preview the training structure.</p>
+            <p data-en="Choose a day to preview the training structure." data-ar="اختر يوما للاطلاع على هيكلة التدريب.">Choose a day to preview the training structure.</p>
             <div class="tabs">
-              <button class="tab-button active" data-tab="all" type="button">All Days</button>
-              <button class="tab-button" data-tab="day1" type="button">Day 1</button>
-              <button class="tab-button" data-tab="day2" type="button">Day 2</button>
-              <button class="tab-button" data-tab="day3" type="button">Day 3</button>
+              <button class="tab-button active" data-tab="all" type="button" data-en="All Days" data-ar="كل الأيام">All Days</button>
+              <button class="tab-button" data-tab="day1" type="button" data-en="Day 1" data-ar="اليوم الأول">Day 1</button>
+              <button class="tab-button" data-tab="day2" type="button" data-en="Day 2" data-ar="اليوم الثاني">Day 2</button>
+              <button class="tab-button" data-tab="day3" type="button" data-en="Day 3" data-ar="اليوم الثالث">Day 3</button>
             </div>
           </div>
 
           <div class="program-panels">
             <div class="program-panel active" id="all">
               <div class="program-grid">
-                <article class="program-card glass"><div class="program-date">Day 1 • June 1</div><h3>Opening & DL Session</h3><ul class="program-list"><li>Opening Ceremony</li><li>ICRA Plenary Streaming</li><li>DL Session</li><li>Poster Session</li></ul></article>
-                <article class="program-card glass"><div class="program-date">Day 2 • June 2</div><h3>Hands-on Workshops</h3><ul class="program-list"><li>Hands-on Workshops</li><li>ICRA Plenary Streaming</li><li>Practical Labs</li><li>Interactive Sessions</li></ul></article>
-                <article class="program-card glass"><div class="program-date">Day 3 • June 3</div><h3>Closing & Awards</h3><ul class="program-list"><li>DL Session</li><li>ICRA Plenary Streaming</li><li>Award Ceremony</li><li>Closing Ceremony</li></ul></article>
+                <article class="program-card glass"><div class="program-date" data-en="Day 1 • June 1" data-ar="اليوم الأول • 1 يونيو">Day 1 • June 1</div><h3 data-en="Opening & DL Session" data-ar="الافتتاح وجلسة التعلم العميق">Opening & DL Session</h3><ul class="program-list"><li data-en="Opening Ceremony" data-ar="حفل الافتتاح">Opening Ceremony</li><li data-en="ICRA Plenary Streaming" data-ar="بث الجلسة العامة لـ ICRA">ICRA Plenary Streaming</li><li data-en="DL Session" data-ar="جلسة التعلم العميق">DL Session</li><li data-en="Poster Session" data-ar="جلسة الملصقات">Poster Session</li></ul></article>
+                <article class="program-card glass"><div class="program-date" data-en="Day 2 • June 2" data-ar="اليوم الثاني • 2 يونيو">Day 2 • June 2</div><h3 data-en="Hands-on Workshops" data-ar="ورش عمل تطبيقية">Hands-on Workshops</h3><ul class="program-list"><li data-en="Hands-on Workshops" data-ar="ورش عمل تطبيقية">Hands-on Workshops</li><li data-en="ICRA Plenary Streaming" data-ar="بث الجلسة العامة لـ ICRA">ICRA Plenary Streaming</li><li data-en="Practical Labs" data-ar="مخابر عملية">Practical Labs</li><li data-en="Interactive Sessions" data-ar="جلسات تفاعلية">Interactive Sessions</li></ul></article>
+                <article class="program-card glass"><div class="program-date" data-en="Day 3 • June 3" data-ar="اليوم الثالث • 3 يونيو">Day 3 • June 3</div><h3 data-en="Closing & Awards" data-ar="الختام والجوائز">Closing & Awards</h3><ul class="program-list"><li data-en="DL Session" data-ar="جلسة التعلم العميق">DL Session</li><li data-en="ICRA Plenary Streaming" data-ar="بث الجلسة العامة لـ ICRA">ICRA Plenary Streaming</li><li data-en="Award Ceremony" data-ar="حفل الجوائز">Award Ceremony</li><li data-en="Closing Ceremony" data-ar="حفل الختام">Closing Ceremony</li></ul></article>
               </div>
             </div>
 
             <div class="program-panel" id="day1">
-              <article class="program-card glass"><div class="program-date">June 1</div><h3>Opening & Deep Learning Session</h3><ul class="program-list"><li>Welcome and orientation</li><li>ICRA plenary streaming</li><li>Deep learning for robotic perception</li><li>Poster session and networking</li></ul></article>
+              <article class="program-card glass"><div class="program-date" data-en="June 1" data-ar="1 يونيو">June 1</div><h3 data-en="Opening & Deep Learning Session" data-ar="الافتتاح وجلسة التعلم العميق">Opening & Deep Learning Session</h3><ul class="program-list"><li data-en="Welcome and orientation" data-ar="الترحيب والتوجيه">Welcome and orientation</li><li data-en="ICRA plenary streaming" data-ar="بث الجلسة العامة لـ ICRA">ICRA plenary streaming</li><li data-en="Deep learning for robotic perception" data-ar="التعلم العميق للإدراك الروبوتي">Deep learning for robotic perception</li><li data-en="Poster session and networking" data-ar="جلسة ملصقات وتواصل">Poster session and networking</li></ul></article>
             </div>
             <div class="program-panel" id="day2">
-              <article class="program-card glass"><div class="program-date">June 2</div><h3>Hands-on Workshops</h3><ul class="program-list"><li>Robotics practice sessions</li><li>Interactive labs</li><li>Team exercises</li><li>Mentor-guided technical work</li></ul></article>
+              <article class="program-card glass"><div class="program-date" data-en="June 2" data-ar="2 يونيو">June 2</div><h3 data-en="Hands-on Workshops" data-ar="ورش عمل تطبيقية">Hands-on Workshops</h3><ul class="program-list"><li data-en="Robotics practice sessions" data-ar="جلسات تطبيقية في الروبوتات">Robotics practice sessions</li><li data-en="Interactive labs" data-ar="مخابر تفاعلية">Interactive labs</li><li data-en="Team exercises" data-ar="تمارين جماعية">Team exercises</li><li data-en="Mentor-guided technical work" data-ar="عمل تقني بإشراف الموجهين">Mentor-guided technical work</li></ul></article>
             </div>
             <div class="program-panel" id="day3">
-              <article class="program-card glass"><div class="program-date">June 3</div><h3>Closing & Awards</h3><ul class="program-list"><li>Final technical session</li><li>Award ceremony</li><li>Certificates and closing remarks</li><li>Future IEEE RAS opportunities</li></ul></article>
+              <article class="program-card glass"><div class="program-date" data-en="June 3" data-ar="3 يونيو">June 3</div><h3 data-en="Closing & Awards" data-ar="الختام والجوائز">Closing & Awards</h3><ul class="program-list"><li data-en="Final technical session" data-ar="الجلسة التقنية الختامية">Final technical session</li><li data-en="Award ceremony" data-ar="حفل الجوائز">Award ceremony</li><li data-en="Certificates and closing remarks" data-ar="الشهادات والكلمات الختامية">Certificates and closing remarks</li><li data-en="Future IEEE RAS opportunities" data-ar="فرص مستقبلية مع IEEE RAS">Future IEEE RAS opportunities</li></ul></article>
             </div>
           </div>
 
           <div class="mini-grid">
-            <div class="mini-card glass"><strong>Expert Instructors</strong>Learn from pioneering researchers and industry leaders.</div>
-            <div class="mini-card glass"><strong>Hands-on Labs</strong>Interactive sessions with real robotics platforms.</div>
-            <div class="mini-card glass"><strong>Networking</strong>Connect with professionals from around the world.</div>
+            <div class="mini-card glass"><strong data-en="Expert Instructors" data-ar="مدربون خبراء">Expert Instructors</strong><span data-en="Learn from pioneering researchers and industry leaders." data-ar="تعلم من باحثين رائدين وقادة في الصناعة.">Learn from pioneering researchers and industry leaders.</span></div>
+            <div class="mini-card glass"><strong data-en="Hands-on Labs" data-ar="مخابر تطبيقية">Hands-on Labs</strong><span data-en="Interactive sessions with real robotics platforms." data-ar="جلسات تفاعلية باستخدام منصات روبوتية حقيقية.">Interactive sessions with real robotics platforms.</span></div>
+            <div class="mini-card glass"><strong data-en="Networking" data-ar="التواصل">Networking</strong><span data-en="Connect with professionals from around the world." data-ar="تواصل مع محترفين من مختلف أنحاء العالم.">Connect with professionals from around the world.</span></div>
           </div>
         </div>
       </div>
@@ -1771,16 +238,16 @@
     <section class="section" id="speakers">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">World-Class Faculty</span>
-          <h2 class="section-title">Featured <span class="grad">Speakers</span></h2>
-          <p class="section-description">Learn from the world’s leading robotics researchers and industry pioneers.</p>
+          <span class="eyebrow" data-en="World-Class Faculty" data-ar="نخبة عالمية من الأساتذة">World-Class Faculty</span>
+          <h2 class="section-title"><span data-en="Featured" data-ar="أبرز">Featured</span> <span class="grad" data-en="Speakers" data-ar="المتحدثين">Speakers</span></h2>
+          <p class="section-description" data-en="Learn from the world’s leading robotics researchers and industry pioneers." data-ar="تعلم من أبرز باحثي الروبوتات ورواد الصناعة في العالم.">Learn from the world’s leading robotics researchers and industry pioneers.</p>
         </div>
 
         <div class="speakers-box glass reveal">
-          <div class="speaker-dot">LIVE</div>
-          <h3>Will be announced soon</h3>
-          <p>Speakers will be revealed as we approach the event. Stay tuned for speaker announcements.</p>
-          <button class="btn btn-primary coming-soon" type="button">Registration Opens Soon</button>
+          <div class="speaker-dot" data-en="LIVE" data-ar="قريبا">LIVE</div>
+          <h3 data-en="Will be announced soon" data-ar="سيتم الإعلان قريبا">Will be announced soon</h3>
+          <p data-en="Speakers will be revealed as we approach the event. Stay tuned for speaker announcements." data-ar="سيتم الكشف عن المتحدثين مع اقتراب موعد الفعالية. تابعوا الإعلانات القادمة.">Speakers will be revealed as we approach the event. Stay tuned for speaker announcements.</p>
+          <button class="btn btn-primary coming-soon" type="button" data-en="Registration Opens Soon" data-ar="سيفتح التسجيل قريبا">Registration Opens Soon</button>
         </div>
       </div>
     </section>
@@ -1788,9 +255,9 @@
     <section class="section" id="committee">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">System Leadership</span>
-          <h2 class="section-title">Organizing <span class="grad">Committee</span></h2>
-          <p class="section-description">Distinguished leaders in robotics research overseeing the program.</p>
+          <span class="eyebrow" data-en="System Leadership" data-ar="قيادة البرنامج">System Leadership</span>
+          <h2 class="section-title"><span data-en="Organizing" data-ar="اللجنة">Organizing</span> <span class="grad" data-en="Committee" data-ar="المنظمة">Committee</span></h2>
+          <p class="section-description" data-en="Distinguished leaders in robotics research overseeing the program." data-ar="فريق متميز يشرف على تنظيم البرنامج ومتابعة تفاصيله.">Distinguished leaders in robotics research overseeing the program.</p>
         </div>
 
         <div class="committee-grid" id="committeeGrid"></div>
@@ -1800,20 +267,20 @@
     <section class="section" id="partners">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">Connected Robotics Ecosystem</span>
-          <h2 class="section-title">Partners & <span class="grad">Sponsors</span></h2>
-          <p class="section-description">Supported by leading academic institutions and industry leaders.</p>
+          <span class="eyebrow" data-en="Connected Robotics Ecosystem" data-ar="منظومة روبوتات مترابطة">Connected Robotics Ecosystem</span>
+          <h2 class="section-title"><span data-en="Partners &" data-ar="الشركاء و">Partners &</span> <span class="grad" data-en="Sponsors" data-ar="الداعمون">Sponsors</span></h2>
+          <p class="section-description" data-en="Supported by leading academic institutions and industry leaders." data-ar="بدعم من مؤسسات أكاديمية وجهات رائدة في المجال.">Supported by leading academic institutions and industry leaders.</p>
         </div>
 
         <div class="partners-grid">
-          <div class="partner-card glass reveal"><div><strong>IEEE RAS</strong><span>Partner</span></div></div>
-          <div class="partner-card glass reveal"><div><strong>IEEE RAS Tunisia Chapter</strong><span>Host</span></div></div>
+          <div class="partner-card glass reveal"><div><strong>IEEE RAS</strong><span data-en="Partner" data-ar="شريك">Partner</span></div></div>
+          <div class="partner-card glass reveal"><div><strong data-en="IEEE RAS Tunisia Chapter" data-ar="فرع IEEE RAS تونس">IEEE RAS Tunisia Chapter</strong><span data-en="Host" data-ar="المضيف">Host</span></div></div>
         </div>
 
         <div class="sponsor-note glass reveal">
-          Interested in becoming a partner or sponsor? We welcome collaboration from organizations committed to advancing robotics research and education.
+          <span data-en="Interested in becoming a partner or sponsor? We welcome collaboration from organizations committed to advancing robotics research and education." data-ar="هل ترغب في أن تصبح شريكا أو داعما؟ نرحب بالتعاون مع المؤسسات الملتزمة بتطوير البحث والتعليم في مجال الروبوتات.">Interested in becoming a partner or sponsor? We welcome collaboration from organizations committed to advancing robotics research and education.</span>
           <br><br>
-          <button class="btn btn-primary coming-soon" type="button">Registration Opens Soon</button>
+          <button class="btn btn-primary coming-soon" type="button" data-en="Registration Opens Soon" data-ar="سيفتح التسجيل قريبا">Registration Opens Soon</button>
         </div>
       </div>
     </section>
@@ -1821,14 +288,14 @@
     <section class="section" id="tunisia">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">Tunisia</span>
-          <h2 class="section-title">Host Country <span class="grad">Experience</span></h2>
-          <p class="section-description">A practical section for visitors, travel preparation, and event logistics.</p>
+          <span class="eyebrow" data-en="Tunisia" data-ar="تونس">Tunisia</span>
+          <h2 class="section-title"><span data-en="Host Country" data-ar="تجربة البلد">Host Country</span> <span class="grad" data-en="Experience" data-ar="المضيف">Experience</span></h2>
+          <p class="section-description" data-en="A practical section for visitors, travel preparation, and event logistics." data-ar="قسم عملي للزوار، يشمل التحضير للسفر والمعلومات اللوجستية للفعالية.">A practical section for visitors, travel preparation, and event logistics.</p>
         </div>
 
         <div class="travel-grid">
-          <article class="travel-card glass reveal"><h3>Location</h3><p>The school takes place in Tunisia, with event information centered around Tunis and the IEEE RAS Tunisia community.</p><ul class="check-list"><li>Accessible location for local participants.</li><li>International networking environment.</li><li>Robotics community engagement.</li></ul></article>
-          <article class="travel-card glass reveal"><h3>Before Arrival</h3><p>Participants should prepare travel documents, check visa conditions, and follow official announcements for the final venue.</p><ul class="check-list"><li>Bring a laptop for practical sessions.</li><li>Follow email updates after application.</li><li>Plan accommodation and transportation early.</li></ul></article>
+          <article class="travel-card glass reveal"><h3 data-en="Location" data-ar="الموقع">Location</h3><p data-en="The school takes place in Tunisia, with event information centered around Tunis and the IEEE RAS Tunisia community." data-ar="تقام المدرسة في تونس، مع معلومات فعالية مرتبطة بتونس العاصمة ومجتمع IEEE RAS تونس.">The school takes place in Tunisia, with event information centered around Tunis and the IEEE RAS Tunisia community.</p><ul class="check-list"><li data-en="Accessible location for local participants." data-ar="موقع مناسب للمشاركين المحليين.">Accessible location for local participants.</li><li data-en="International networking environment." data-ar="بيئة تواصل دولية.">International networking environment.</li><li data-en="Robotics community engagement." data-ar="تفاعل مع مجتمع الروبوتات.">Robotics community engagement.</li></ul></article>
+          <article class="travel-card glass reveal"><h3 data-en="Before Arrival" data-ar="قبل الوصول">Before Arrival</h3><p data-en="Participants should prepare travel documents, check visa conditions, and follow official announcements for the final venue." data-ar="ينبغي للمشاركين تجهيز وثائق السفر، والتحقق من شروط التأشيرة، ومتابعة الإعلانات الرسمية الخاصة بالمكان النهائي.">Participants should prepare travel documents, check visa conditions, and follow official announcements for the final venue.</p><ul class="check-list"><li data-en="Bring a laptop for practical sessions." data-ar="أحضر حاسوبا محمولا للجلسات التطبيقية.">Bring a laptop for practical sessions.</li><li data-en="Follow email updates after application." data-ar="تابع تحديثات البريد الإلكتروني بعد التقديم.">Follow email updates after application.</li><li data-en="Plan accommodation and transportation early." data-ar="خطط للإقامة والتنقل مبكرا.">Plan accommodation and transportation early.</li></ul></article>
         </div>
       </div>
     </section>
@@ -1836,14 +303,14 @@
     <section class="section" id="visa">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">Visa Requirements</span>
-          <h2 class="section-title">Travel & Visa <span class="grad">Information</span></h2>
-          <p class="section-description">This section can be connected to a separate visa page or updated with official visa guidance.</p>
+          <span class="eyebrow" data-en="Visa Requirements" data-ar="متطلبات التأشيرة">Visa Requirements</span>
+          <h2 class="section-title"><span data-en="Travel & Visa" data-ar="السفر والتأشيرة">Travel & Visa</span> <span class="grad" data-en="Information" data-ar="معلومات">Information</span></h2>
+          <p class="section-description" data-en="This section can be connected to a separate visa page or updated with official visa guidance." data-ar="يمكن ربط هذا القسم بصفحة منفصلة للتأشيرة أو تحديثه بإرشادات رسمية.">This section can be connected to a separate visa page or updated with official visa guidance.</p>
         </div>
 
         <div class="travel-grid">
-          <article class="travel-card glass reveal"><h3>International Participants</h3><p>Check entry requirements for Tunisia according to your passport and country of residence before booking travel.</p><a class="btn btn-ghost" href="#contact">Contact Support</a></article>
-          <article class="travel-card glass reveal"><h3>Documents</h3><p>Keep your passport, invitation/acceptance confirmation, accommodation details, and event registration information ready.</p><button class="btn btn-primary coming-soon" type="button">Visa Page Coming Soon</button></article>
+          <article class="travel-card glass reveal"><h3 data-en="International Participants" data-ar="المشاركون الدوليون">International Participants</h3><p data-en="Check entry requirements for Tunisia according to your passport and country of residence before booking travel." data-ar="تحقق من متطلبات الدخول إلى تونس حسب جواز سفرك وبلد إقامتك قبل حجز السفر.">Check entry requirements for Tunisia according to your passport and country of residence before booking travel.</p><a class="btn btn-ghost" href="#contact" data-en="Contact Support" data-ar="تواصل مع الدعم">Contact Support</a></article>
+          <article class="travel-card glass reveal"><h3 data-en="Documents" data-ar="الوثائق">Documents</h3><p data-en="Keep your passport, invitation/acceptance confirmation, accommodation details, and event registration information ready." data-ar="احتفظ بجواز السفر، وتأكيد الدعوة أو القبول، وتفاصيل الإقامة، ومعلومات التسجيل في الفعالية جاهزة.">Keep your passport, invitation/acceptance confirmation, accommodation details, and event registration information ready.</p><button class="btn btn-primary coming-soon" type="button" data-en="Visa Page Coming Soon" data-ar="صفحة التأشيرة قريبا">Visa Page Coming Soon</button></article>
         </div>
       </div>
     </section>
@@ -1851,9 +318,9 @@
     <section class="section" id="faq">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="eyebrow">Neural Query System</span>
-          <h2 class="section-title">Knowledge <span class="grad">Terminal</span></h2>
-          <p class="section-description">Query the system for information about the ICRA Satellite School.</p>
+          <span class="eyebrow" data-en="Neural Query System" data-ar="نظام الاستفسارات">Neural Query System</span>
+          <h2 class="section-title"><span data-en="Knowledge" data-ar="منصة">Knowledge</span> <span class="grad" data-en="Terminal" data-ar="المعرفة">Terminal</span></h2>
+          <p class="section-description" data-en="Query the system for information about the ICRA Satellite School." data-ar="استعلم عن معلومات تخص مدرسة ICRA الفضائية.">Query the system for information about the ICRA Satellite School.</p>
         </div>
 
         <div class="terminal glass reveal">
@@ -1863,8 +330,8 @@
             <div class="terminal-question" id="terminalQuestion">QUERY_001</div>
             <div class="terminal-answer" id="terminalAnswer"></div>
             <div class="direct-query">
-              <input id="directInput" type="text" placeholder="Type a direct system query..." />
-              <button class="btn btn-primary" id="directButton" type="button">Initialize Contact</button>
+              <input id="directInput" type="text" placeholder="Type a direct system query..." data-placeholder-en="Type a direct system query..." data-placeholder-ar="اكتب سؤالك هنا..." />
+              <button class="btn btn-primary" id="directButton" type="button" data-en="Initialize Contact" data-ar="إرسال الاستفسار">Initialize Contact</button>
             </div>
           </div>
         </div>
@@ -1874,13 +341,13 @@
     <section class="section" id="contact">
       <div class="container">
         <div class="cta-card glass reveal">
-          <span class="eyebrow">Initialize Contact</span>
-          <h2>Ready to Transform Your <span class="grad">Robotics Career?</span></h2>
-          <p>Join 100+ professionals for an intensive three-day program with world-leading roboticists. Early bird registration is now open with special discounts.</p>
-          <div class="cta-metrics"><span>10+ Expert Speakers</span><span>Hands-on Labs</span><span>Global Network</span></div>
-          <button class="btn btn-primary coming-soon" type="button">Registration Opens Soon</button>
-          <a href="#program" class="btn btn-ghost">View Program</a>
-          <p style="margin-top:18px; font-size:14px; color:var(--orange);">Limited seats available.</p>
+          <span class="eyebrow" data-en="Initialize Contact" data-ar="ابدأ التواصل">Initialize Contact</span>
+          <h2><span data-en="Ready to Transform Your" data-ar="هل أنت مستعد لتطوير">Ready to Transform Your</span> <span class="grad" data-en="Robotics Career?" data-ar="مسارك في الروبوتات؟">Robotics Career?</span></h2>
+          <p data-en="Join 100+ professionals for an intensive three-day program with world-leading roboticists. Early bird registration is now open with special discounts." data-ar="انضم إلى أكثر من 100 مشارك في برنامج مكثف لمدة ثلاثة أيام مع خبراء روبوتات عالميين.">Join 100+ professionals for an intensive three-day program with world-leading roboticists. Early bird registration is now open with special discounts.</p>
+          <div class="cta-metrics"><span data-en="10+ Expert Speakers" data-ar="أكثر من 10 متحدثين خبراء">10+ Expert Speakers</span><span data-en="Hands-on Labs" data-ar="مخابر تطبيقية">Hands-on Labs</span><span data-en="Global Network" data-ar="شبكة عالمية">Global Network</span></div>
+          <button class="btn btn-primary coming-soon" type="button" data-en="Registration Opens Soon" data-ar="سيفتح التسجيل قريبا">Registration Opens Soon</button>
+          <a href="#program" class="btn btn-ghost" data-en="View Program" data-ar="عرض البرنامج">View Program</a>
+          <p style="margin-top:18px; font-size:14px; color:var(--orange);" data-en="Limited seats available." data-ar="المقاعد محدودة.">Limited seats available.</p>
         </div>
       </div>
     </section>
@@ -1892,20 +359,20 @@
         <div>
           <a href="#home" class="brand" style="margin-bottom:14px; display:inline-flex;">
             <span class="brand-mark">R</span>
-            <span>ICRA Satellite School<span class="brand-small">Advancing robotics education</span></span>
+            <span><span data-en="ICRA Satellite School" data-ar="مدرسة ICRA الفضائية">ICRA Satellite School</span><span class="brand-small" data-en="Advancing robotics education" data-ar="النهوض بتعليم الروبوتات">Advancing robotics education</span></span>
           </a>
-          <p>Advancing robotics education and research worldwide.</p>
+          <p data-en="Advancing robotics education and research worldwide." data-ar="النهوض بتعليم الروبوتات والبحث العلمي عالميا.">Advancing robotics education and research worldwide.</p>
           <div class="socials"><a href="#">IG</a><a href="#">IN</a><a href="#">FB</a></div>
         </div>
 
-        <div><h3>Quick Links</h3><div class="footer-links"><a href="#home">Home</a><a href="#program">Program</a><a href="#grant">Travel Grant</a><a href="#speakers">Speakers</a><a href="#committee">Committee</a></div></div>
-        <div><h3>Information</h3><div class="footer-links"><a href="#visa">Visa Requirements</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="#partners">Partners</a><a href="#about">About</a></div></div>
-        <div><h3>Contact</h3><div class="footer-links"><span>Email: icra-tep@ieee.tn</span><span>Phone: +216 90 552 146</span><span>Location: Tunis, Tunisia</span></div></div>
+        <div><h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3><div class="footer-links"><a href="#home" data-en="Home" data-ar="الرئيسية">Home</a><a href="#program" data-en="Program" data-ar="البرنامج">Program</a><a href="#grant" data-en="Travel Grant" data-ar="منحة السفر">Travel Grant</a><a href="#speakers" data-en="Speakers" data-ar="المتحدثون">Speakers</a><a href="#committee" data-en="Committee" data-ar="اللجنة">Committee</a></div></div>
+        <div><h3 data-en="Information" data-ar="معلومات">Information</h3><div class="footer-links"><a href="#visa" data-en="Visa Requirements" data-ar="متطلبات التأشيرة">Visa Requirements</a><a href="#faq" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a><a href="#contact" data-en="Contact" data-ar="تواصل">Contact</a><a href="#partners" data-en="Partners" data-ar="الشركاء">Partners</a><a href="#about" data-en="About" data-ar="حول">About</a></div></div>
+        <div><h3 data-en="Contact" data-ar="التواصل">Contact</h3><div class="footer-links"><span data-en="Email: icra-tep@ieee.tn" data-ar="البريد الإلكتروني: icra-tep@ieee.tn">Email: icra-tep@ieee.tn</span><span data-en="Phone: +216 90 552 146" data-ar="الهاتف: +216 90 552 146">Phone: +216 90 552 146</span><span data-en="Location: Tunis, Tunisia" data-ar="الموقع: تونس، تونس">Location: Tunis, Tunisia</span></div></div>
       </div>
 
       <div class="footer-bottom">
-        <span>Copyright 2026 IEEE - All rights reserved.</span>
-        <span>Home | Travel Grant | Visa Requirements | Contact & Support | Accessibility</span>
+        <span data-en="Copyright 2026 IEEE - All rights reserved." data-ar="حقوق النشر 2026 IEEE - جميع الحقوق محفوظة.">Copyright 2026 IEEE - All rights reserved.</span>
+        <span data-en="Home | Travel Grant | Visa Requirements | Contact & Support | Accessibility" data-ar="الرئيسية | منحة السفر | متطلبات التأشيرة | التواصل والدعم | إمكانية الوصول">Home | Travel Grant | Visa Requirements | Contact & Support | Accessibility</span>
       </div>
     </div>
   </footer>
@@ -1914,274 +381,12 @@
 
   <div class="modal" id="modal">
     <div class="modal-card glass">
-      <h3>Coming Soon</h3>
-      <p>Registration and detailed program updates will be announced soon. Keep checking the official communication channels.</p>
-      <button class="btn btn-primary" id="closeModal" type="button">Close</button>
+      <h3 data-en="Coming Soon" data-ar="قريبا">Coming Soon</h3>
+      <p data-en="Registration and detailed program updates will be announced soon. Keep checking the official communication channels." data-ar="سيتم الإعلان قريبا عن التسجيل وتحديثات البرنامج التفصيلية. تابع القنوات الرسمية.">Registration and detailed program updates will be announced soon. Keep checking the official communication channels.</p>
+      <button class="btn btn-primary" id="closeModal" type="button" data-en="Close" data-ar="إغلاق">Close</button>
     </div>
   </div>
-
-  <script>
-    const committeeMembers = [
-      ['Yassine Aniba', 'General Chair', 'IEEE RAS Tunisia Chapter'],
-      ['Jinene Ben Said', 'General Chair', 'IEEE RAS SAC'],
-      ['Ahmed Aouididi', 'General Chair', 'IEEE RAS Tunisia Chapter'],
-      ['Mohamed Amine Louati', 'Treasurer', 'IEEE RAS Tunisia Chapter'],
-      ['Mohamed Amine Ben Helal', 'Technical Committee Chair', 'IEEE RAS Tunisia Chapter'],
-      ['Wyssem Neila', 'Social Media Lead', 'IEEE RAS Tunisia Chapter'],
-      ['Azizi Hbaili', 'Branding Lead', 'IEEE ESPRIT SB'],
-      ['Maryem Yousfi', 'Logistics Committee', 'IEEE ENICarthage SB'],
-      ['Ahmed hihi', 'Logistics Committee', 'IEEE INSAT SB'],
-      ['Yessmine Sallemi', 'Participants Coordinator', 'IEEE ENETCOM SB'],
-      ['Yassine Soussi', 'Industry & Academic Coordinator', 'IEEE ENIT SB'],
-      ['Baha eddine Hammou', 'Program Committee', 'IEEE ENSIT SB'],
-      ['Mohamed Aziz Ben Slima', 'Program Committee', 'IEEE ESPRIT SB'],
-      ['Nadine Jellali', 'Secretary', 'IEEE Tunisia Section']
-    ];
-
-    const queries = [
-      ['QUERY_001', 'Who should attend the ICRA Satellite School?', 'Students, researchers, young professionals, IEEE members, and robotics enthusiasts interested in robotics, automation, AI, and intelligent systems.'],
-      ['QUERY_002', 'Will I receive a certificate of completion?', 'Certificates may be provided to participants who attend the program and complete the required activities.'],
-      ['QUERY_003', 'What is included in the registration fee?', 'The registration fee can cover access to sessions, workshops, school activities, networking moments, and official event materials depending on the final package.'],
-      ['QUERY_004', 'Will the sessions be recorded?', 'Recording availability depends on the organizers and speakers. Follow official announcements for final details.'],
-      ['QUERY_005', 'Will there be networking opportunities?', 'Yes. The program includes networking with participants, mentors, IEEE representatives, researchers, and industry professionals.'],
-      ['QUERY_006', 'What equipment do I need to bring?', 'A laptop is strongly recommended for practical workshops, labs, and interactive technical sessions.']
-    ];
-
-    const preloader = document.getElementById('preloader');
-    const navbar = document.getElementById('navbar');
-    const navLinks = document.getElementById('navLinks');
-    const menuButton = document.getElementById('menuButton');
-    const backTop = document.getElementById('backTop');
-    const modal = document.getElementById('modal');
-    const closeModal = document.getElementById('closeModal');
-    const cursorHalo = document.getElementById('cursorHalo');
-
-    window.addEventListener('load', () => {
-      setTimeout(() => preloader.classList.add('hide'), 550);
-    });
-
-    menuButton.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-      menuButton.classList.toggle('open');
-      document.body.classList.toggle('menu-open');
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        menuButton.classList.remove('open');
-        document.body.classList.remove('menu-open');
-      });
-    });
-
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY > 40;
-      navbar.classList.toggle('scrolled', scrolled);
-      backTop.classList.toggle('show', window.scrollY > 520);
-      updateActiveLink();
-    });
-
-    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    function updateActiveLink() {
-      const sections = document.querySelectorAll('section[id]');
-      let current = 'home';
-      sections.forEach(section => {
-        if (window.scrollY >= section.offsetTop - 140) current = section.id;
-      });
-      document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-      });
-    }
-
-    document.addEventListener('mousemove', event => {
-      cursorHalo.style.opacity = 1;
-      cursorHalo.style.left = event.clientX + 'px';
-      cursorHalo.style.top = event.clientY + 'px';
-    });
-
-    document.addEventListener('mouseleave', () => {
-      cursorHalo.style.opacity = 0;
-    });
-
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.13 });
-
-    document.querySelectorAll('.reveal').forEach(item => revealObserver.observe(item));
-
-    const counterObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    document.querySelectorAll('.stat-number').forEach(counter => counterObserver.observe(counter));
-
-    function animateCounter(counter) {
-      const target = Number(counter.dataset.target);
-      const prefix = counter.dataset.prefix || '';
-      const suffix = counter.dataset.suffix || '';
-      const start = performance.now();
-      const duration = 1250;
-
-      function tick(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const value = Math.floor(target * (1 - Math.pow(1 - progress, 3)));
-        counter.textContent = prefix + value + suffix;
-        if (progress < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }
-
-    function updateDeadline() {
-      const deadline = new Date('2026-04-26T23:59:00+01:00').getTime();
-      const now = Date.now();
-      let diff = Math.max(deadline - now, 0);
-
-      const d = Math.floor(diff / 86400000); diff %= 86400000;
-      const h = Math.floor(diff / 3600000); diff %= 3600000;
-      const m = Math.floor(diff / 60000); diff %= 60000;
-      const s = Math.floor(diff / 1000);
-
-      document.getElementById('days').textContent = String(d).padStart(2, '0');
-      document.getElementById('hours').textContent = String(h).padStart(2, '0');
-      document.getElementById('minutes').textContent = String(m).padStart(2, '0');
-      document.getElementById('seconds').textContent = String(s).padStart(2, '0');
-    }
-
-    updateDeadline();
-    setInterval(updateDeadline, 1000);
-
-    document.querySelectorAll('.tab-button').forEach(button => {
-      button.addEventListener('click', () => {
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.program-panel').forEach(panel => panel.classList.remove('active'));
-        button.classList.add('active');
-        document.getElementById(button.dataset.tab).classList.add('active');
-      });
-    });
-
-    const committeeGrid = document.getElementById('committeeGrid');
-    committeeMembers.forEach((member, index) => {
-      const initials = member[0].split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase();
-      const card = document.createElement('article');
-      card.className = 'committee-card glass reveal';
-      card.style.transitionDelay = Math.min(index * 0.03, 0.3) + 's';
-      card.innerHTML = '<div class="avatar">' + initials + '</div><h3>' + member[0] + '</h3><div class="role-tag">' + member[1] + '</div><p>' + member[2] + '</p>';
-      committeeGrid.appendChild(card);
-      revealObserver.observe(card);
-    });
-
-    const queryList = document.getElementById('queryList');
-    const terminalQuestion = document.getElementById('terminalQuestion');
-    const terminalAnswer = document.getElementById('terminalAnswer');
-
-    queries.forEach((query, index) => {
-      const button = document.createElement('button');
-      button.className = 'query-btn' + (index === 0 ? ' active' : '');
-      button.type = 'button';
-      button.innerHTML = '<strong>' + query[0] + '</strong>' + query[1];
-      button.addEventListener('click', () => selectQuery(index));
-      queryList.appendChild(button);
-    });
-
-    function selectQuery(index) {
-      document.querySelectorAll('.query-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.query-btn')[index].classList.add('active');
-      terminalQuestion.textContent = queries[index][0] + ' :: ' + queries[index][1];
-      typeText(queries[index][2]);
-    }
-
-    function typeText(text) {
-      terminalAnswer.textContent = '';
-      let i = 0;
-      const interval = setInterval(() => {
-        terminalAnswer.textContent += text.charAt(i);
-        i++;
-        if (i >= text.length) clearInterval(interval);
-      }, 12);
-    }
-
-    selectQuery(0);
-
-    document.getElementById('directButton').addEventListener('click', () => {
-      const value = document.getElementById('directInput').value.trim();
-      terminalQuestion.textContent = 'DIRECT_SYSTEM_QUERY';
-      typeText(value ? 'Query not found in knowledge base. Contact support at icra-tep@ieee.tn for direct assistance.' : 'Please type a question first.');
-    });
-
-    document.querySelectorAll('.coming-soon').forEach(button => {
-      button.addEventListener('click', () => modal.classList.add('open'));
-    });
-
-    closeModal.addEventListener('click', () => modal.classList.remove('open'));
-    modal.addEventListener('click', event => {
-      if (event.target === modal) modal.classList.remove('open');
-    });
-
-    const canvas = document.getElementById('networkCanvas');
-    const ctx = canvas.getContext('2d');
-    let points = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const count = Math.min(90, Math.floor((canvas.width * canvas.height) / 17000));
-      points = Array.from({ length: count }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.38,
-        vy: (Math.random() - 0.5) * 0.38
-      }));
-    }
-
-    function drawNetwork() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(0, 224, 255, 0.58)';
-      ctx.strokeStyle = 'rgba(0, 224, 255, 0.12)';
-
-      for (const point of points) {
-        point.x += point.vx;
-        point.y += point.vy;
-        if (point.x < 0 || point.x > canvas.width) point.vx *= -1;
-        if (point.y < 0 || point.y > canvas.height) point.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, 1.35, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      for (let i = 0; i < points.length; i++) {
-        for (let j = i + 1; j < points.length; j++) {
-          const dx = points[i].x - points[j].x;
-          const dy = points[i].y - points[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 130) {
-            ctx.globalAlpha = 1 - dist / 130;
-            ctx.beginPath();
-            ctx.moveTo(points[i].x, points[i].y);
-            ctx.lineTo(points[j].x, points[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(drawNetwork);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    drawNetwork();
-  </script>
+  <script src="theme.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
